@@ -44,7 +44,6 @@ function App() {
           onLegendHover={()=> null}
           onSlicesHover={() => null}
           highlightHover={false}
-
         />
     </>
   );
