@@ -16,12 +16,14 @@
       fill: #607580;
     }
     &__text-val{
-      height: 28px;
-      text-align: center;
-      font: normal normal 600 23px/20px Proxima Nova;
-      letter-spacing: 0px;
-      color: #000000;
-      opacity: 1;
+      font-size:22px;
     }
+    &__text-percent{
+      font-size:14px;
+    }
+    &__text-label{
+      font-size:9px;
+    }
+
   }
 }

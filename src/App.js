@@ -3,28 +3,27 @@ import DonutSvg from './components/donut-svg';
 
 const slices = [
   {
-    color: '#d2d3d4', // '#3746E0',
-    isBackground: true,
-  },
-  {
     color: '#009688',
     title: 'Marvel',
-    size: '25',
-    highlightOnHover: true,
+    value: '25',
     renderTitle: () => null,
   },
   {
     color: '#ce843e',
     title: 'Alaska',
-    size: '13',
-    highlightOnHover: false,
+    value: '13',
     renderTitle: () => null,
   },
   {
     color: '#005577',
-    title: 'Santa Maria',
-    size: '1',
-    highlightOnHover: false,
+    title: 'South Pole',
+    value: '18',
+    renderTitle: () => null,
+  },
+  {
+    color: '#f05d77',
+    title: 'North Pole',
+    value: '4',
     renderTitle: () => null,
   },
 ]
@@ -32,18 +31,22 @@ const slices = [
 function App() {
   return (
     <>
-        <Donut />
+        <br /><br /><br />
         <DonutSvg
           title="Some text"
           slices={slices}
           strokeWidth={17}
           diameter={190}
+          bgRingColor={false}
           hideLegend={false}
           hideExtraInfo={true}
           onDonutHover={()=> null}
           onLegendHover={()=> null}
           onSlicesHover={() => null}
           highlightHover={false}
+          startFrom={0}
+          isPercentage={false}
+          sort="DSC"
         />
     </>
   );

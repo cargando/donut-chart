@@ -1,88 +1,110 @@
 import React from 'react';
-import './styles.scss';
+import {Donut} from "./components/donut";
+import {DonutTitle} from "./components/donutTitle";
+import {DonutSimpleLegend} from "./components/legend";
 
-const renderTitle = ({radius, title}) => {
-  return title && (
-    <text className="donut-svg__text" x={radius} y={radius} style={{textAnchor:'middle'}} >
-      <tspan className="donut-svg__text-val">{title}</tspan>
-    </text>
-  );
-}
 
-function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
-}
+class DonutSvgChart extends React.Component{
 
-const DonutSvgChart = (props) => {
+  constructor(props) {
+    super(props);
 
-  const defaultSlice = {
-    color: '',
-    title: '',
-    size: '100',
-    highlightOnHover: false,
-    renderTitle: () => null,
-  }
-  const {
-    title,
-    diameter = 116,
-    strokeWidth = 16,
-    sort = 'ASC',
-    startFrom = getRandomArbitrary(80, 100),
-    slices=[],
-    donutBgColor = '#fff',
-  } = props;
-
-  const radius = (diameter / 2);
-  const pieRadius = radius - strokeWidth / 2
-  const ringRadius = radius - strokeWidth;
-  const ringCircumference = pieRadius * 2  * Math.PI;
-  let strokeDashoffset = 0;
-
-  const renderSlice = (item, index) => {
-    const {
-      size = 100,
-      color,
-      isBackground = false,
-    } = item;
-
-    const strokeVal = ringCircumference / 100 * size;
-    const strokeDasharray = (strokeVal + ' ' + ringCircumference);
-
-    const result = (
-      <circle
-        key={index}
-        r={pieRadius}
-        cx={radius}
-        cy={radius}
-        stroke={color}
-        strokeWidth={strokeWidth}
-        strokeDasharray={strokeDasharray}
-        strokeDashoffset={ isBackground ? 0 : strokeDashoffset}
-        transform={`rotate(${startFrom} ${radius} ${radius})`}
-        fill="transparent"
-      />);
-
-    if (!isBackground) {
-      strokeDashoffset-= strokeVal;
+    this.state = {
+      sortedList: null,
+      sourceList: null,
     }
-    return result;
+
   }
 
-  return (
-    <>
-    <div style={{width: `${diameter}px`, height: `${diameter}px`}}>
-      <svg width={diameter} height={diameter} viewBox={`0 0 ${diameter} ${diameter}`}  className="donut-svg__chart">
-        <circle cx={radius} cy={radius} r={ringRadius} fill={donutBgColor} />
-        {
-          slices.map(renderSlice)
-        }
-        {
-          renderTitle({radius, title})
-        }
-      </svg>
-    </div>
-      </>
-  );
+  static getDerivedStateFromProps(props, state) {
+    if(state.sourceList !== props.slices) {
+      const slicesCopy = [...props.slices];
+      let sortedList = slicesCopy.sort(DonutSvgChart.sortList(props.sort || 'ASC'));
+      if (!props.isPercentage) {
+        sortedList = DonutSvgChart.calcPercents(sortedList)
+      }
+      return {
+        sourceList: props.slices,
+        sortedList: DonutSvgChart.makeBackgroundItemFirst(sortedList),
+      }
+    }
+
+    return null;
+  }
+
+  static calcPercents(list) {
+    const newList = [];
+    const len = list.length;
+    let sum = 0;
+
+    for(let i = 0; i < len; i++) {
+      sum += list[i].value;
+    }
+    const onePercent = sum / 100;
+    for(let i = 0; i < len; i++) {
+      newList[i] = {...list[i]};
+      console.log('precent', newList[i].value , onePercent)
+      newList[i].precent = (newList[i].value / onePercent).toFixed(2);
+    }
+  console.log('newList', newList)
+    return newList;
+  }
+
+  static makeBackgroundItemFirst(list) {
+    const len = list.length;
+    let i = 0;
+    for(; i < len; i++) {
+      if(list[i].isBackground) {
+        const bgItem = list.splice(i, 1);
+        return [...bgItem, ...list];
+      }
+    }
+    return [...list];
+  }
+
+  static sortList(order) {
+    return function (a, b) {
+      if (a.isBackground || b.isBackground) {
+        return 0;
+      }
+      return order === 'ASC' ? a.value - b.value : b.value - a.value;
+    }
+  }
+
+  getRandomArbitrary = (min, max) => {
+    return Math.random() * (max - min) + min;
+  }
+
+  renderTitle = (radius, title) => () =>  (<DonutTitle xPos={radius} xPos={radius} title={title}/>);
+
+  render() {
+    const {
+      title,
+      diameter = 116,
+      strokeWidth = 16,
+      startFrom = this.getRandomArbitrary(80, 100),
+      slices=[],
+      donutBgColor = '#fff',
+      bgRingColor = null,
+    } = this.props;
+
+    return (
+      <div style={{display: 'flex'}}>
+        <Donut
+          slices={slices}
+          diameter={diameter}
+          donutBgColor={donutBgColor}
+          bgRingColor={bgRingColor}
+          strokeWidth={strokeWidth}
+          startFrom={startFrom}
+          renderTitle={ this.renderTitle(diameter / 2, title) }
+        />
+        <DonutSimpleLegend
+          options={this.state.sortedList}
+        />
+      </div>
+    );
+  }
 }
 
 export default DonutSvgChart;

@@ -1,0 +1,44 @@
+.donut-legend {
+  display: flex;
+  flex-direction: column;
+  margin-left: 25px;
+  &__left-space {
+    margin-left: 112px;
+  }
+  &__simple-option {
+    height: 20px;
+    text-align: left;
+    font: normal normal normal 16px/28px Proxima Nova;
+    letter-spacing: 0px;
+    color: #818181;
+    margin-top: 10px;
+  }
+  &__checkbox-option {
+    display: flex;
+    flex-direction: row;
+    &_checked {
+      font: normal normal 600 16px/32px Proxima Nova !important;
+      color: #000000 !important;;
+    }
+  }
+  &__option-radio {
+    flex-grow: 0;
+  }
+  &__option-text {
+    flex-grow: 1;
+    text-align: left;
+    font: normal normal normal 16px/32px Proxima Nova;
+    letter-spacing: 0px;
+    color: #818181;
+  }
+  &__option-value {
+    flex-grow: 0;
+  }
+  &__colored-value {
+    height: 20px;
+    text-align: left;
+    font: normal normal bold 16px/28px Proxima Nova;
+    letter-spacing: 0px;
+    color: #EEA038;
+  }
+}
