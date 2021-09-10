@@ -37,7 +37,7 @@ function App() {
           slices={slices}
           strokeWidth={17}
           diameter={190}
-          bgRingColor={false}
+          bgRingColor={'#efefef'}
           hideLegend={false}
           hideExtraInfo={true}
           onDonutHover={()=> null}

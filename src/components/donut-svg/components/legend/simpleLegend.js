@@ -24,7 +24,7 @@ export function DonutSimpleLegend(props) {
             onMouseOver={handleMouseOver}
           >
             {item.title}&nbsp;
-            <span className="donut-legend__colored-value">{item.percent}</span>
+            <span className="donut-legend__colored-value">{item.percent}</span>&nbsp;
             {
               !hideValues && `(${item.value})`
             }

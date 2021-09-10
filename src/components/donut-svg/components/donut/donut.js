@@ -28,12 +28,12 @@ export function Donut(props) {
 
   const renderSlice = (item, index) => {
     const {
-      value = 100,
+      percent = 100,
       color,
       isBackground = false,
     } = item;
 
-    const strokeVal = ringCircumference / 100 * value;
+    const strokeVal = ringCircumference / 100 * percent;
     const strokeDasharray = (strokeVal + ' ' + ringCircumference);
 
     const result = (
@@ -48,6 +48,7 @@ export function Donut(props) {
         strokeDashoffset={ isBackground ? 0 : strokeDashoffset}
         transform={`rotate(${startFrom} ${radius} ${radius})`}
         fill="transparent"
+        data-size={percent}
       />);
 
     if (!isBackground) {
@@ -56,7 +57,7 @@ export function Donut(props) {
     return result;
   }
 
-
+console.log('slices', slices)
 
   return (
     <div style={{width: `${diameter}px`, height: `${diameter}px`, position: 'relative', flexGrow: 0}}>
