@@ -1,29 +1,28 @@
-.donut {
-  &-svg {
-    &__chart {
-      margin: 0 auto;
-      border-radius: 5%;
-      border: 1px solid red;
-      display: flex;
-    }
-    &__ring {
-      fill: transparent;
-    }
-    &__hole{
-    }
-    &__text{
-      font-family: 'Roboto';
-      fill: #607580;
-    }
-    &__text-val{
-      font-size:22px;
-    }
-    &__text-percent{
-      font-size:14px;
-    }
-    &__text-label{
-      font-size:9px;
-    }
-
+.donut-svg {
+  &__chart {
+    margin: 0 auto;
+    border-radius: 5%;
+    border: 1px solid red;
+    display: flex;
   }
+  &__hole{
+  }
+  &__text{
+    height: 28px;
+    text-align: center;
+    font: normal normal 600 23px/20px Proxima Nova;
+    letter-spacing: 0px;
+    fill: #000000;
+    opacity: 1;
+  }
+  &__text-val{
+    font-size:22px;
+  }
+  &__text-percent{
+    font-size:14px;
+  }
+  &__text-label{
+    font-size:9px;
+  }
+
 }

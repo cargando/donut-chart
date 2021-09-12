@@ -1,7 +1,7 @@
 import React from 'react';
 import {Donut} from "./components/donut";
 import {DonutTitle} from "./components/donutTitle";
-import {DonutSimpleLegend} from "./components/legend";
+import {DonutExtraLegend, DonutSimpleLegend} from "./components/legend";
 
 
 class DonutSvgChart extends React.Component{
@@ -12,6 +12,7 @@ class DonutSvgChart extends React.Component{
     this.state = {
       sortedList: [],
       sourceList: [],
+      checked: -1,
     }
 
   }
@@ -65,7 +66,16 @@ class DonutSvgChart extends React.Component{
     return Math.random() * (max - min) + min;
   }
 
-  renderTitle = (radius, title) => () =>  (<DonutTitle xPos={radius} xPos={radius} title={title}/>);
+  handleChangeExtraOption = (e) => {
+    const checked = e.currentTarget.getAttribute('data-index');
+    this.setState({checked});
+  }
+
+  renderTitle = (radius, title) => () =>  (<DonutTitle xPos={radius} yPos={radius} title={title}/>);
+
+  renderLegend = () => {
+
+  }
 
   render() {
     const {
@@ -75,7 +85,9 @@ class DonutSvgChart extends React.Component{
       startFrom = this.getRandomArbitrary(80, 100),
       donutBgColor = '#fff',
       bgRingColor = null,
-      isPercentage = false
+      isPercentage = false,
+      isColoredLegend = false,
+      extraInfoLegend = false,
     } = this.props;
 
     return (
@@ -89,10 +101,23 @@ class DonutSvgChart extends React.Component{
           startFrom={startFrom}
           renderTitle={ this.renderTitle(diameter / 2, title) }
         />
-        <DonutSimpleLegend
-          options={this.state.sortedList}
-          hideValues={isPercentage}
-        />
+        {
+          extraInfoLegend ? (
+            <DonutExtraLegend
+              options={this.state.sortedList}
+              checked={this.state.checked}
+              isColoredLegend={isColoredLegend}
+              onChange={this.handleChangeExtraOption}
+            />
+          ) : (
+            <DonutSimpleLegend
+              options={this.state.sortedList}
+              hideValues={isPercentage}
+              isColoredLegend={isColoredLegend}
+            />
+          )
+        }
+
       </div>
     );
   }
