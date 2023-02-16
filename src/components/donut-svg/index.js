@@ -1,7 +1,7 @@
 import React from 'react';
 import {Donut} from "./components/donut";
 import {DonutTitle} from "./components/donutTitle";
-import {DonutExtraLegend, DonutSimpleLegend} from "./components/legend";
+import {DonutExtraLegend, DonutSimpleLegend, ExtraInfo} from "./components/legend";
 
 
 class DonutSvgChart extends React.Component{
@@ -88,6 +88,7 @@ class DonutSvgChart extends React.Component{
       isPercentage = false,
       isColoredLegend = false,
       extraInfoLegend = false,
+      hideLegend = false,
     } = this.props;
 
     return (
@@ -102,20 +103,30 @@ class DonutSvgChart extends React.Component{
           renderTitle={ this.renderTitle(diameter / 2, title) }
         />
         {
-          extraInfoLegend ? (
-            <DonutExtraLegend
-              options={this.state.sortedList}
-              checked={this.state.checked}
-              isColoredLegend={isColoredLegend}
-              onChange={this.handleChangeExtraOption}
-            />
-          ) : (
+          !hideLegend && extraInfoLegend ? (
+            <>
+              <DonutExtraLegend
+                options={this.state.sortedList}
+                checked={this.state.checked}
+                isColoredLegend={isColoredLegend}
+                onChange={this.handleChangeExtraOption}
+              />
+              {
+                this.state.sortedList && this.state.checked >= 0 && (
+                  <ExtraInfo
+                    title={this.state.sortedList[this.state.checked].title}
+                    list={this.state.sortedList[this.state.checked].extraInfo}
+                  />)
+              }
+            </>
+          ) :
+            !hideLegend && (
             <DonutSimpleLegend
               options={this.state.sortedList}
               hideValues={isPercentage}
               isColoredLegend={isColoredLegend}
-            />
-          )
+            />)
+
         }
 
       </div>

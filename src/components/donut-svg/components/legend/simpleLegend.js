@@ -5,11 +5,12 @@ export function DonutSimpleLegend(props) {
     options,
     hideValues = false,
     onMouseOver,
-    isColoredLegend,
-    isColoredPercent = false,
-    isBlack = true,
+    isColoredLegend = false,
+    isColoredPercent = true,
+    isBlack = false,
   } = props;
 
+  console.log("isColoredLegend", isColoredLegend)
   const handleMouseOver = (e) => {
     if (!onMouseOver) {
       return;
